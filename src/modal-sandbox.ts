@@ -10,7 +10,7 @@
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runPreview, type PreviewResult } from './modal/preview-runner.js';
+import { runPreview, runBakedPreview, type PreviewResult } from './modal/preview-runner.js';
 import type { Sandbox } from './modal/modal.types.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -49,8 +49,10 @@ async function main() {
         'Create a token at https://modal.com/settings/tokens',
     );
   }
+  // When BAKED_IMAGE_ID is set, boot from that image (no clone/install needed).
+  const bakedImageId = process.env.BAKED_IMAGE_ID || undefined;
   const repoUrl = process.env.GIT_REPO_URL;
-  if (!repoUrl) {
+  if (!bakedImageId && !repoUrl) {
     throw new Error('Missing GIT_REPO_URL in .env (e.g. https://github.com/owner/repo.git)');
   }
 
@@ -89,30 +91,31 @@ async function main() {
   process.on('SIGINT', () => void shutdown('SIGINT'));
   process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
+  const previewOpts = {
+    repoUrl: repoUrl ?? '',
+    token: process.env.GIT_TOKEN || undefined,
+    branch: process.env.GIT_BRANCH || undefined,
+    subdir: process.env.APP_SUBDIR || undefined,
+    port: process.env.DEV_PORT ? Number(process.env.DEV_PORT) : undefined,
+    installCmd: process.env.INSTALL_CMD || undefined,
+    devCmd: process.env.DEV_CMD || undefined,
+    userName: process.env.GIT_USER_NAME || undefined,
+    userEmail: process.env.GIT_USER_EMAIL || undefined,
+    env: injectEnv,
+    envFile: process.env.INJECT_ENV_NAME || undefined,
+  };
+  const hooks = {
+    log: (m: string) => console.log('  ' + m),
+    onSandboxCreated: (sb: Sandbox) => {
+      sandbox = sb;
+    },
+  };
+
   let result: PreviewResult;
   try {
-    result = await runPreview(
-      client,
-      {
-        repoUrl,
-        token: process.env.GIT_TOKEN || undefined,
-        branch: process.env.GIT_BRANCH || undefined,
-        subdir: process.env.APP_SUBDIR || undefined,
-        port: process.env.DEV_PORT ? Number(process.env.DEV_PORT) : undefined,
-        installCmd: process.env.INSTALL_CMD || undefined,
-        devCmd: process.env.DEV_CMD || undefined,
-        userName: process.env.GIT_USER_NAME || undefined,
-        userEmail: process.env.GIT_USER_EMAIL || undefined,
-        env: injectEnv,
-        envFile: process.env.INJECT_ENV_NAME || undefined,
-      },
-      {
-        log: (m) => console.log('  ' + m),
-        onSandboxCreated: (sb) => {
-          sandbox = sb;
-        },
-      },
-    );
+    result = bakedImageId
+      ? await runBakedPreview(client, { ...previewOpts, bakedImageId }, hooks)
+      : await runPreview(client, previewOpts, hooks);
   } catch (err) {
     // Startup failed after the sandbox was created — don't leave it running.
     if (sandbox) {

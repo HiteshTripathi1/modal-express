@@ -11,6 +11,7 @@
     "build": "tsc",
     "start:prod": "node dist/index.js",
     "sandbox": "tsx src/modal-sandbox.ts",
+    "bake": "tsx src/bake.ts",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\""
   },

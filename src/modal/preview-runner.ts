@@ -53,6 +53,11 @@ export interface PreviewOptions {
   env?: Record<string, string>;
   /** Filename for the materialized env file, relative to the app dir. Default `.env`. */
   envFile?: string;
+  /**
+   * If set, boot the sandbox FROM this baked image (repo + node_modules already
+   * inside) and skip clone+install — see runBakedPreview().
+   */
+  bakedImageId?: string;
 }
 
 export interface PreviewTimings {
@@ -241,5 +246,68 @@ fi
       `(create ${createMs} / clone ${cloneMs} / install ${installMs} / dev ${devReadyMs}).`,
   );
 
+  return { sandboxId: sandbox.sandboxId, url, port, timings, sandbox };
+}
+
+/**
+ * Fast path: boot a sandbox FROM a baked image (created by `npm run bake` /
+ * snapshotFilesystem) that already contains the repo + node_modules, then start
+ * the dev server. No clone, no install — just create → dev → tunnel.
+ */
+export async function runBakedPreview(
+  client: ModalClient,
+  opts: PreviewOptions & { bakedImageId: string },
+  hooks: PreviewHooks = {},
+): Promise<PreviewResult> {
+  const log = hooks.log ?? (() => {});
+  const port = opts.port ?? 5173;
+  const devCmd = opts.devCmd ?? 'pnpm run dev';
+
+  const t0 = Date.now();
+  const app = await client.apps.fromName('modal-sandbox-api', { createIfMissing: true });
+
+  log(`Using baked image ${opts.bakedImageId} (skipping clone + install)...`);
+  const image = await client.images.fromId(opts.bakedImageId);
+
+  log(`Creating sandbox (tunneling port ${port})...`);
+  const sandbox = await client.sandboxes.create(app, image, {
+    encryptedPorts: [port],
+    workdir: WORKSPACE,
+    timeoutMs: DEFAULT_TIMEOUT_MS,
+    env: PREVIEW_ENV,
+  });
+  hooks.onSandboxCreated?.(sandbox);
+  const createMs = Date.now() - t0;
+  log(`Sandbox ${sandbox.sandboxId} created (${createMs} ms).`);
+
+  const appDir = opts.subdir ? `${REPO_DIR}/${opts.subdir}` : REPO_DIR;
+
+  // Optional: overlay env into the baked repo (the repo dir already exists).
+  if (opts.env && Object.keys(opts.env).length > 0) {
+    const envFile = opts.envFile ?? '.env';
+    const content = Object.entries(opts.env).map(([k, v]) => `${k}=${v}`).join('\n') + '\n';
+    await sandbox.filesystem.writeText(content, `${appDir}/${envFile}`);
+    log(`Wrote ${Object.keys(opts.env).length} env var(s) to ${envFile}.`);
+  }
+
+  const tDev = Date.now();
+  const devCommand = `${devCmd} -- --port=${port}`;
+  log(`Starting dev server: ${devCommand}`);
+  const dev = await sandbox.exec(['sh', '-c', devCommand], {
+    workdir: appDir,
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+  drain(dev.stdout, log, '[dev]');
+  drain(dev.stderr, log, '[dev]');
+
+  const tunnels = await sandbox.tunnels();
+  const url = tunnels[port]?.url;
+  if (!url) throw new Error(`No tunnel URL for port ${port}`);
+  const devReadyMs = Date.now() - tDev;
+  const totalMs = Date.now() - t0;
+
+  const timings: PreviewTimings = { createMs, cloneMs: 0, installMs: 0, devReadyMs, totalMs };
+  log(`Ready in ${totalMs} ms (create ${createMs} / dev ${devReadyMs}) [baked].`);
   return { sandboxId: sandbox.sandboxId, url, port, timings, sandbox };
 }
