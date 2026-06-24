@@ -210,15 +210,13 @@ fi
 
   // 3. start dev server (long-running, not awaited).
   //
-  // The express server — not the cloned repo — owns how the dev server is
-  // exposed: it forces the dev server onto the tunneled port and binds all
-  // interfaces by appending Vite CLI flags here. This keeps the boilerplate
-  // port-agnostic, so editing the app (e.g. by an AI) can't drift the port and
-  // break the fixed tunnel. Flags are forwarded through the package-manager run
-  // script (`npm/pnpm/yarn run`) via the `--` separator; --strictPort makes Vite
-  // fail fast instead of silently moving off the tunneled port.
+  // The express server owns the dev port: it appends `--port` (from DEV_PORT) so
+  // the dev server matches the tunnel, regardless of the repo's default port.
+  // The repo is responsible for binding 0.0.0.0 and allowing the tunnel host
+  // (Vite `server.host` / `allowedHosts` in its own config). The flag is
+  // forwarded through the package-manager run script via the `--` separator.
   const tDev = Date.now();
-  const devCommand = `${devCmd} -- --host --port ${port} --strictPort`;
+  const devCommand = `${devCmd} -- --port=${port}`;
   log(`Starting dev server: ${devCommand}`);
   const dev = await sandbox.exec(['sh', '-c', devCommand], {
     workdir: appDir,
