@@ -69,6 +69,10 @@
     {
       "key": "projectId",
       "value": ""
+    },
+    {
+      "key": "apiKey",
+      "value": ""
     }
   ],
   "item": [
@@ -3050,5 +3054,15 @@
         }
       ]
     }
-  ]
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  }
 }

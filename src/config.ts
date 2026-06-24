@@ -10,6 +10,8 @@ export interface AppConfig {
   port: number;
   apiPrefix: string;
   nodeEnv: string;
+  /** Shared API key required on every request (empty = auth disabled). */
+  apiKey?: string;
   modalTokenId?: string;
   modalTokenSecret?: string;
   /** Cloudflare defaults for /publish (a request body can still override these). */
@@ -33,6 +35,7 @@ export const config: AppConfig = {
   port: Number(process.env.PORT ?? 3000),
   apiPrefix: process.env.API_PREFIX ?? '',
   nodeEnv: process.env.NODE_ENV ?? 'development',
+  apiKey: process.env.API_KEY,
   modalTokenId: process.env.MODAL_TOKEN_ID,
   modalTokenSecret: process.env.MODAL_TOKEN_SECRET,
   cloudflare: {
