@@ -34,9 +34,15 @@ export function createApp() {
   app.use(express.json({ limit: '25mb' }));
 
   const api = Router();
-  // Every API route requires a valid API key (see middleware/auth.ts).
-  api.use(apiKeyAuth);
+
+  // Public (no API key): the base endpoint and the health check.
+  api.get('/', (_req, res) => {
+    res.json({ name: config.appName, status: 'ok' });
+  });
   api.use('/health', health);
+
+  // Everything below requires a valid API key (see middleware/auth.ts).
+  api.use(apiKeyAuth);
   api.use('/sandboxes', sandboxes);
   api.use('/previews', previews);
   api.use('/deployments', deployments);
