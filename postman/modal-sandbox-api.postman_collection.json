@@ -1,0 +1,3054 @@
+{
+  "info": {
+    "name": "Modal Sandbox API (Express)",
+    "_postman_id": "c2f8b0e3-4d5a-4b9f-8c32-modalexpress01",
+    "description": "REST API over Modal Sandboxes (Express + TypeScript).\n\nAPI-compatible with the NestJS version. Set the `baseUrl`, `repoUrl`, and `gitToken`\ncollection variables before running.\n`POST /sandboxes` and `POST /previews` automatically save the returned id into\nthe `sandboxId` / `previewSandboxId` variables, so the file/exec/tunnel requests\ncan be run right after with no manual copying.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api",
+      "type": "string"
+    },
+    {
+      "key": "sandboxId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "previewSandboxId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "repoUrl",
+      "value": "https://github.com/HiteshTripathi1/tanstack-starter.git",
+      "type": "string"
+    },
+    {
+      "key": "gitToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "port",
+      "value": "3000",
+      "type": "string"
+    },
+    {
+      "key": "cfAccountId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "cfApiToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "dispatchNamespace",
+      "value": "tenant-apps",
+      "type": "string"
+    },
+    {
+      "key": "scriptName",
+      "value": "acme-demo",
+      "type": "string"
+    },
+    {
+      "key": "cfZoneId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "customDomain",
+      "value": "poc-test.zenixai.tech",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Liveness check."
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"status\": \"ok\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"A todo app with a dark theme and a calendar view\",\n  \"name\": \"todo-demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "201 \u2014 Create Project",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"A todo app with a dark theme and a calendar view\",\n  \"name\": \"todo-demo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"id\": \"proj_64ef0dec\",\n  \"name\": \"todo-demo\",\n  \"prompt\": \"A todo app with a dark theme and a calendar view\",\n  \"repoUrl\": \"https://github.com/HiteshTripathi1/tanstack-starter.git\",\n  \"sandboxId\": null,\n  \"previewUrl\": null,\n  \"port\": null,\n  \"status\": \"created\",\n  \"createdAt\": \"2026-06-24T09:54:59.681Z\",\n  \"updatedAt\": \"2026-06-24T09:54:59.681Z\"\n}",
+              "cookie": []
+            },
+            {
+              "name": "400 \u2014 prompt required",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"message\": [\n    \"prompt: Required\"\n  ],\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Get Project",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 \u2014 Get Project",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/{{projectId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    "{{projectId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"id\": \"proj_64ef0dec\",\n  \"name\": \"todo-demo\",\n  \"prompt\": \"A todo app with a dark theme and a calendar view\",\n  \"repoUrl\": \"https://github.com/HiteshTripathi1/tanstack-starter.git\",\n  \"sandboxId\": \"sb-jdVKiU2QpXjzj6uv889aAU\",\n  \"previewUrl\": \"https://ta-01kvwgvy36v7kx9ap2xacmwezs-3000-g29cbvieapmjtkfrv7lymh34j.w.modal.host\",\n  \"port\": 3000,\n  \"status\": \"running\",\n  \"createdAt\": \"2026-06-24T09:54:59.681Z\",\n  \"updatedAt\": \"2026-06-24T09:55:16.603Z\"\n}",
+              "cookie": []
+            },
+            {
+              "name": "404 \u2014 not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/proj_nope",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    "proj_nope"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"message\": \"Project proj_nope not found\",\n  \"error\": \"Not Found\",\n  \"statusCode\": 404\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 \u2014 List Projects",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"proj_64ef0dec\",\n    \"name\": \"todo-demo\",\n    \"prompt\": \"A todo app with a dark theme and a calendar view\",\n    \"repoUrl\": \"https://github.com/HiteshTripathi1/tanstack-starter.git\",\n    \"sandboxId\": null,\n    \"previewUrl\": null,\n    \"port\": null,\n    \"status\": \"created\",\n    \"createdAt\": \"2026-06-24T09:54:59.681Z\",\n    \"updatedAt\": \"2026-06-24T09:54:59.681Z\"\n  }\n]",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Init Sandbox (clone + dev + preview)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}/sandbox",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}",
+                "sandbox"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 \u2014 Init Sandbox (clone + dev + preview)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/{{projectId}}/sandbox",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    "{{projectId}}",
+                    "sandbox"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"id\": \"proj_64ef0dec\",\n  \"name\": \"todo-demo\",\n  \"prompt\": \"A todo app with a dark theme and a calendar view\",\n  \"repoUrl\": \"https://github.com/HiteshTripathi1/tanstack-starter.git\",\n  \"sandboxId\": \"sb-jdVKiU2QpXjzj6uv889aAU\",\n  \"previewUrl\": \"https://ta-01kvwgvy36v7kx9ap2xacmwezs-3000-g29cbvieapmjtkfrv7lymh34j.w.modal.host\",\n  \"port\": 3000,\n  \"status\": \"running\",\n  \"createdAt\": \"2026-06-24T09:54:59.681Z\",\n  \"updatedAt\": \"2026-06-24T09:55:16.603Z\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 \u2014 Delete Project",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/{{projectId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "projects",
+                    "{{projectId}}"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sandboxes",
+      "item": [
+        {
+          "name": "Create Sandbox",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.sandboxId) {",
+                  "  pm.collectionVariables.set('sandboxId', json.sandboxId);",
+                  "  pm.test('saved sandboxId', () => pm.expect(json.sandboxId).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"node:22-slim\",\n  \"encryptedPorts\": [5173],\n  \"timeoutMs\": 1800000,\n  \"workdir\": \"/workspace\",\n  \"env\": {\n    \"APP_GREETING\": \"Hello from the POC env\",\n    \"TENANT_NAME\": \"acme-demo\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes"
+              ]
+            },
+            "description": "Create a sandbox. All body fields are optional (defaults: image node:22-slim, timeout 30m)."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request (validation)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"encryptedPorts\": \"nope\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": [\n    \"each value in encryptedPorts must be an integer number\",\n    \"encryptedPorts must be an array\"\n  ],\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "Live: Create Sandbox \u2192 201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"node:22-slim\",\n  \"encryptedPorts\": [\n    5173\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"sandboxId\": \"sb-rEhVJshLLgQGJz2lZ7C1M8\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "List Sandboxes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes"
+              ]
+            },
+            "description": "List all sandboxes currently tracked in the in-memory registry."
+          },
+          "response": [
+            {
+              "name": "Live: List Sandboxes \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "[\n  {\n    \"sandboxId\": \"sb-rTGEktdTTanUnGucwJIvBu\",\n    \"createdAt\": \"2026-06-24T07:34:01.410Z\",\n    \"meta\": {\n      \"kind\": \"preview\",\n      \"repoUrl\": \"https://github.com/HiteshTripathi1/tanstack-starter.git\"\n    }\n  }\n]",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Get Sandbox Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}"
+              ]
+            },
+            "description": "Returns exitCode (null while running) and current tunnel URLs."
+          },
+          "response": [
+            {
+              "name": "Live: Get Sandbox Status \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"sandboxId\": \"sb-rTGEktdTTanUnGucwJIvBu\",\n  \"exitCode\": null,\n  \"tunnels\": {\n    \"3000\": \"https://ta-01kvw8spzppg5wvthcpz7pxtks-3000-3nkezudvcitnv6cwyvqhsu1aa.w.modal.host\"\n  }\n}",
+              "cookie": []
+            },
+            {
+              "name": "Live: Get Sandbox Status (404) \u2192 404",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/sb-doesNotExist123",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "sb-doesNotExist123"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"message\": \"Sandbox sb-doesNotExist123 not found\",\n  \"error\": \"Not Found\",\n  \"statusCode\": 404\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Terminate Sandbox",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}"
+              ]
+            },
+            "description": "Terminate the sandbox and drop it from the registry."
+          },
+          "response": [
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/sb-missing",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "sb-missing"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Sandbox sb-missing not found\",\n  \"error\": \"Not Found\",\n  \"statusCode\": 404\n}"
+            },
+            {
+              "name": "Live: Terminate Sandbox \u2192 204",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/sb-rEhVJshLLgQGJz2lZ7C1M8",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "sb-rEhVJshLLgQGJz2lZ7C1M8"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Exec",
+      "item": [
+        {
+          "name": "Exec Command",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"command\": [\"sh\", \"-c\", \"node -v && pwd\"],\n  \"workdir\": \"/workspace\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exec",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "exec"
+              ]
+            },
+            "description": "Run a command and wait for it to finish (buffered). For short commands; not for long-running servers."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request (empty command)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"command\": []\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exec",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "exec"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": [\n    \"command should not be empty\"\n  ],\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "Live: Exec Command \u2192 201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exec",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "exec"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"command\": [\n    \"sh\",\n    \"-c\",\n    \"node -v && npm -v && pwd\"\n  ],\n  \"workdir\": \"/workspace/repo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"exitCode\": 0,\n  \"stdout\": \"v22.23.0\\n10.9.8\\n/workspace/repo\\n\",\n  \"stderr\": \"\"\n}",
+              "cookie": []
+            },
+            {
+              "name": "Live: Exec ls \u2192 201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exec",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "exec"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"command\": [\n    \"ls\",\n    \"-la\",\n    \"/workspace/repo\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"exitCode\": 0,\n  \"stdout\": \"total 162\\ndrwxr-xr-x 1 root root    420 Jun 24 07:34 .\\ndrwxr-xr-x 1 root root     60 Jun 24 07:34 ..\\n-rw-r--r-- 1 root root    359 Jun 24 07:34 .cta.json\\n-rw-r--r-- 1 root root    175 Jun 24 07:34 .cursorrules\\ndrwxr-xr-x 1 root root    360 Jun 24 07:34 .git\\n-rw-r--r-- 1 root root    327 Jun 24 07:34 .gitignore\\n-rw-r--r-- 1 root root     42 Jun 24 07:34 .prettierignore\\ndrwxr-xr-x 1 root root     60 Jun 24 07:34 .vscode\\n-rw-r--r-- 1 root root   3266 Jun 24 07:34 README.md\\n-rw-r--r-- 1 root root    423 Jun 24 07:34 components.json\\n-rw-r--r-- 1 root root    435 Jun 24 07:34 eslint.config.js\\ndrwxr-xr-x 1 root root   4880 Jun 24 07:34 node_modules\\n-rw-r--r-- 1 root root 153920 Jun 24 07:34 package-lock.json\\n-rw-r--r-- 1 root root   1690 Jun 24 07:34 package.json\\ndrwxr-xr-x 1 root root     60 Jun 24 07:34 packages\\n-rw-r--r-- 1 root root    160 Jun 24 07:34 prettier.config.js\\ndrwxr-xr-x 1 root root    140 Jun 24 07:34 public\\ndrwxr-xr-x 1 root root    160 Jun 24 07:34 src\\n-rw-r--r-- 1 root root    712 Jun 24 07:34 tsconfig.json\\n-rw-r--r-- 1 root root     24 Jun 24 07:34 tsr.config.json\\n-rw-r--r-- 1 root root    799 Jun 24 07:34 vite.config.ts\\n\",\n  \"stderr\": \"\"\n}",
+              "cookie": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Write File",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"path\": \"/workspace/hello.txt\",\n  \"content\": \"Hello from the Modal Sandbox API\\n\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "description": "Write a UTF-8 text file (parent dirs created automatically)."
+          },
+          "response": [
+            {
+              "name": "Live: Write File \u2192 200",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"content\": \"alpha\\nbeta\\ngamma\\ndelta\\n\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"bytes\": 23\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Read File",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files?path=/workspace/hello.txt",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace/hello.txt"
+                }
+              ]
+            },
+            "description": "Read a file's text content."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request (missing path)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Query param \\\"path\\\" is required\",\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "Live: Read File (whole) \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files?path=/workspace/repo/package.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/package.json"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/package.json\",\n  \"totalLines\": 62,\n  \"start\": 1,\n  \"end\": 62,\n  \"content\": \"{\\n  \\\"name\\\": \\\"new-test\\\",\\n  \\\"private\\\": true,\\n  \\\"type\\\": \\\"module\\\",\\n  \\\"imports\\\": {\\n    \\\"#/*\\\": \\\"./src/*\\\"\\n  },\\n  \\\"scripts\\\": {\\n    \\\"dev\\\": \\\"vite dev\\\",\\n    \\\"dev:tagger\\\": \\\"ENABLE_TAGGER=true vite dev\\\",\\n    \\\"build\\\": \\\"vite build\\\",\\n    \\\"build:tagger\\\": \\\"ENABLE_TAGGER=true vite build\\\",\\n    \\\"generate-routes\\\": \\\"tsr generate\\\",\\n    \\\"preview\\\": \\\"vite preview\\\",\\n    \\\"test\\\": \\\"vitest run\\\",\\n    \\\"lint\\\": \\\"eslint\\\",\\n    \\\"format\\\": \\\"prettier --write . && eslint --fix\\\",\\n    \\\"check\\\": \\\"prettier --check .\\\"\\n  },\\n  \\\"dependencies\\\": {\\n    \\\"@t3-oss/env-core\\\": \\\"^0.13.10\\\",\\n    \\\"@tailwindcss/vite\\\": \\\"^4.1.18\\\",\\n    \\\"@tanstack/react-router\\\": \\\"latest\\\",\\n    \\\"@tanstack/react-router-ssr-query\\\": \\\"latest\\\",\\n    \\\"@tanstack/react-start\\\": \\\"latest\\\",\\n    \\\"@tanstack/router-plugin\\\": \\\"^1.132.0\\\",\\n    \\\"class-variance-authority\\\": \\\"^0.7.1\\\",\\n    \\\"clsx\\\": \\\"^2.1.1\\\",\\n    \\\"n0-tagger\\\": \\\"file:./packages/n0-tagger\\\",\\n    \\\"lucide-react\\\": \\\"^0.577.0\\\",\\n    \\\"react\\\": \\\"^19.2.0\\\",\\n    \\\"react-dom\\\": \\\"^19.2.0\\\",\\n    \\\"tailwind-merge\\\": \\\"^3.0.2\\\",\\n    \\\"tailwindcss\\\": \\\"^4.1.18\\\",\\n    \\\"tw-animate-css\\\": \\\"^1.3.6\\\",\\n    \\\"zod\\\": \\\"^4.3.6\\\"\\n  },\\n  \\\"devDependencies\\\": {\\n    \\\"@tailwindcss/typography\\\": \\\"^0.5.16\\\",\\n    \\\"@tanstack/eslint-config\\\": \\\"latest\\\",\\n    \\\"@tanstack/router-cli\\\": \\\"^1.132.0\\\",\\n    \\\"@testing-library/dom\\\": \\\"^10.4.1\\\",\\n    \\\"@testing-library/react\\\": \\\"^16.3.0\\\",\\n    \\\"@types/node\\\": \\\"^22.10.2\\\",\\n    \\\"@types/react\\\": \\\"^19.2.0\\\",\\n    \\\"@types/react-dom\\\": \\\"^19.2.0\\\",\\n    \\\"@vitejs/plugin-react\\\": \\\"^6.0.1\\\",\\n    \\\"esbuild\\\": \\\"^0.28.1\\\",\\n    \\\"eslint\\\": \\\"^10.0.1\\\",\\n    \\\"jsdom\\\": \\\"^28.1.0\\\",\\n    \\\"prettier\\\": \\\"^3.8.1\\\",\\n    \\\"typescript\\\": \\\"^6.0.2\\\",\\n    \\\"vite\\\": \\\"^8.0.0\\\",\\n    \\\"vitest\\\": \\\"^4.1.5\\\"\\n  },\\n  \\\"pnpm\\\": {\\n    \\\"onlyBuiltDependencies\\\": [\\n      \\\"esbuild\\\",\\n      \\\"lightningcss\\\"\\n    ]\\n  }\\n}\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "List Files",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files/list?path=/workspace",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files",
+                "list"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace"
+                }
+              ]
+            },
+            "description": "List a directory's entries."
+          },
+          "response": [
+            {
+              "name": "Live: List Files \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files/list?path=/workspace/repo",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files",
+                    "list"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \".cta.json\",\n    \"path\": \"/workspace/repo/.cta.json\",\n    \"type\": \"file\",\n    \"size\": 359,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \".cursorrules\",\n    \"path\": \"/workspace/repo/.cursorrules\",\n    \"type\": \"file\",\n    \"size\": 175,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \".git\",\n    \"path\": \"/workspace/repo/.git\",\n    \"type\": \"directory\",\n    \"size\": 360,\n    \"mode\": 16877,\n    \"permissions\": \"0755\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \".gitignore\",\n    \"path\": \"/workspace/repo/.gitignore\",\n    \"type\": \"file\",\n    \"size\": 327,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \".prettierignore\",\n    \"path\": \"/workspace/repo/.prettierignore\",\n    \"type\": \"file\",\n    \"size\": 42,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \".vscode\",\n    \"path\": \"/workspace/repo/.vscode\",\n    \"type\": \"directory\",\n    \"size\": 60,\n    \"mode\": 16877,\n    \"permissions\": \"0755\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"README.md\",\n    \"path\": \"/workspace/repo/README.md\",\n    \"type\": \"file\",\n    \"size\": 3266,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"components.json\",\n    \"path\": \"/workspace/repo/components.json\",\n    \"type\": \"file\",\n    \"size\": 423,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"eslint.config.js\",\n    \"path\": \"/workspace/repo/eslint.config.js\",\n    \"type\": \"file\",\n    \"size\": 435,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"node_modules\",\n    \"path\": \"/workspace/repo/node_modules\",\n    \"type\": \"directory\",\n    \"size\": 4900,\n    \"mode\": 16877,\n    \"permissions\": \"0755\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286461,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"package-lock.json\",\n    \"path\": \"/workspace/repo/package-lock.json\",\n    \"type\": \"file\",\n    \"size\": 153920,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286459,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"package.json\",\n    \"path\": \"/workspace/repo/package.json\",\n    \"type\": \"file\",\n    \"size\": 1690,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"packages\",\n    \"path\": \"/workspace/repo/packages\",\n    \"type\": \"directory\",\n    \"size\": 60,\n    \"mode\": 16877,\n    \"permissions\": \"0755\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"prettier.config.js\",\n    \"path\": \"/workspace/repo/prettier.config.js\",\n    \"type\": \"file\",\n    \"size\": 160,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"public\",\n    \"path\": \"/workspace/repo/public\",\n    \"type\": \"directory\",\n    \"size\": 140,\n    \"mode\": 16877,\n    \"permissions\": \"0755\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"src\",\n    \"path\": \"/workspace/repo/src\",\n    \"type\": \"directory\",\n    \"size\": 160,\n    \"mode\": 16877,\n    \"permissions\": \"0755\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"tsconfig.json\",\n    \"path\": \"/workspace/repo/tsconfig.json\",\n    \"type\": \"file\",\n    \"size\": 712,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"tsr.config.json\",\n    \"path\": \"/workspace/repo/tsr.config.json\",\n    \"type\": \"file\",\n    \"size\": 24,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  },\n  {\n    \"name\": \"vite.config.ts\",\n    \"path\": \"/workspace/repo/vite.config.ts\",\n    \"type\": \"file\",\n    \"size\": 799,\n    \"mode\": 33188,\n    \"permissions\": \"0644\",\n    \"owner\": \"root\",\n    \"group\": \"root\",\n    \"modifiedTime\": 1782286443,\n    \"symlinkTarget\": null\n  }\n]",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Delete File",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files?path=/workspace/hello.txt",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace/hello.txt"
+                }
+              ]
+            },
+            "description": "Remove a file or directory (recursive)."
+          },
+          "response": [
+            {
+              "name": "Live: Delete File \u2192 204",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files?path=/workspace/repo/scratchdir",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/scratchdir"
+                    }
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "File Toolkit",
+      "description": "AI-friendly file access: partial reads, targeted edits, tree, search, and file management.",
+      "item": [
+        {
+          "name": "Read File (line range)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files?path=/workspace/repo/package.json&start=1&end=20&numbered=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace/repo/package.json"
+                },
+                {
+                  "key": "start",
+                  "value": "1"
+                },
+                {
+                  "key": "end",
+                  "value": "20"
+                },
+                {
+                  "key": "numbered",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Read a 1-based inclusive line range. Omit start/end for the whole file (files > 2MB require a range). numbered=1 prefixes line numbers. Returns { path, totalLines, start, end, content }."
+          },
+          "response": [
+            {
+              "name": "Live: Read File (line range) \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files?path=/workspace/repo/package.json&start=1&end=12&numbered=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/package.json"
+                    },
+                    {
+                      "key": "start",
+                      "value": "1"
+                    },
+                    {
+                      "key": "end",
+                      "value": "12"
+                    },
+                    {
+                      "key": "numbered",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/package.json\",\n  \"totalLines\": 62,\n  \"start\": 1,\n  \"end\": 12,\n  \"content\": \"1\\t{\\n2\\t  \\\"name\\\": \\\"new-test\\\",\\n3\\t  \\\"private\\\": true,\\n4\\t  \\\"type\\\": \\\"module\\\",\\n5\\t  \\\"imports\\\": {\\n6\\t    \\\"#/*\\\": \\\"./src/*\\\"\\n7\\t  },\\n8\\t  \\\"scripts\\\": {\\n9\\t    \\\"dev\\\": \\\"vite dev\\\",\\n10\\t    \\\"dev:tagger\\\": \\\"ENABLE_TAGGER=true vite dev\\\",\\n11\\t    \\\"build\\\": \\\"vite build\\\",\\n12\\t    \\\"build:tagger\\\": \\\"ENABLE_TAGGER=true vite build\\\",\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - replace string",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"replace\",\n  \"path\": \"/workspace/repo/README.md\",\n  \"oldString\": \"old text\",\n  \"newString\": \"new text\",\n  \"replaceAll\": false,\n  \"dryRun\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "description": "String-match edit (like a code editor). 400 if oldString is missing or non-unique unless replaceAll=true. Returns { changed, totalLines, before, after }. Set dryRun=true to preview without writing."
+          },
+          "response": [
+            {
+              "name": "Live: Edit - replace string \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"replace\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"oldString\": \"beta\",\n  \"newString\": \"BETA\",\n  \"replaceAll\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"replace\",\n  \"dryRun\": false,\n  \"changed\": true,\n  \"totalLines\": 4,\n  \"before\": [\n    {\n      \"line\": 2,\n      \"text\": \"beta\"\n    }\n  ],\n  \"after\": [\n    {\n      \"line\": 2,\n      \"text\": \"BETA\"\n    }\n  ]\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - replace lines",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"replaceLines\",\n  \"path\": \"/workspace/repo/src/index.ts\",\n  \"start\": 10,\n  \"end\": 12,\n  \"content\": \"const port = 3000;\\nstart(port);\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "description": "Replace a 1-based inclusive line range with new content."
+          },
+          "response": [
+            {
+              "name": "Live: Edit - replaceLines \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"replaceLines\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"start\": 1,\n  \"end\": 1,\n  \"content\": \"alpha-1\\nalpha-2\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"replaceLines\",\n  \"dryRun\": false,\n  \"changed\": true,\n  \"totalLines\": 5,\n  \"before\": [\n    {\n      \"line\": 1,\n      \"text\": \"alpha\"\n    }\n  ],\n  \"after\": [\n    {\n      \"line\": 1,\n      \"text\": \"alpha-1\"\n    },\n    {\n      \"line\": 2,\n      \"text\": \"alpha-2\"\n    }\n  ]\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - insert at line",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"insert\",\n  \"path\": \"/workspace/repo/src/index.ts\",\n  \"line\": 1,\n  \"content\": \"// new header comment\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "description": "Insert before the given 1-based line (1 = prepend, beyond EOF = append). Other ops: \"delete\" {start,end}, \"append\" {content}, \"prepend\" {content}."
+          },
+          "response": [
+            {
+              "name": "Live: Edit - insert \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"insert\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"line\": 1,\n  \"content\": \"# header\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"insert\",\n  \"dryRun\": false,\n  \"changed\": true,\n  \"totalLines\": 6,\n  \"before\": [],\n  \"after\": [\n    {\n      \"line\": 1,\n      \"text\": \"# header\"\n    }\n  ]\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Stat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/stat?path=/workspace/repo/package.json",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "stat"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace/repo/package.json"
+                }
+              ]
+            },
+            "description": "File metadata: { path, name, type, size, mtime, permissions }."
+          },
+          "response": [
+            {
+              "name": "Live: Stat \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/stat?path=/workspace/repo/package.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "stat"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/package.json"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/package.json\",\n  \"name\": \"package.json\",\n  \"type\": \"file\",\n  \"size\": 1690,\n  \"mtime\": 1782286443,\n  \"permissions\": \"0644\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Exists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exists?path=/workspace/repo/.env",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "exists"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace/repo/.env"
+                }
+              ]
+            },
+            "description": "{ path, exists }."
+          },
+          "response": [
+            {
+              "name": "Live: Exists (true) \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exists?path=/workspace/repo/package.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "exists"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/package.json"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/package.json\",\n  \"exists\": true\n}",
+              "cookie": []
+            },
+            {
+              "name": "Live: Exists (false) \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/exists?path=/workspace/repo/nope.xyz",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "exists"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/nope.xyz"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/nope.xyz\",\n  \"exists\": false\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Tree",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/tree?path=/workspace/repo&depth=3&hidden=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "tree"
+              ],
+              "query": [
+                {
+                  "key": "path",
+                  "value": "/workspace/repo"
+                },
+                {
+                  "key": "depth",
+                  "value": "3"
+                },
+                {
+                  "key": "hidden",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Recursive folder tree (ignores node_modules/.git/dist/etc). Returns { path, tree (nested), text (ASCII render) }."
+          },
+          "response": [
+            {
+              "name": "Live: Tree \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/tree?path=/workspace/repo/src&depth=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "tree"
+                  ],
+                  "query": [
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo/src"
+                    },
+                    {
+                      "key": "depth",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/src\",\n  \"tree\": {\n    \"name\": \"src\",\n    \"type\": \"directory\",\n    \"path\": \"/workspace/repo/src\",\n    \"children\": [\n      {\n        \"name\": \"env.ts\",\n        \"type\": \"file\",\n        \"path\": \"/workspace/repo/src/env.ts\"\n      },\n      {\n        \"name\": \"lib\",\n        \"type\": \"directory\",\n        \"path\": \"/workspace/repo/src/lib\",\n        \"children\": [\n          {\n            \"name\": \"utils.ts\",\n            \"type\": \"file\",\n            \"path\": \"/workspace/repo/src/lib/utils.ts\"\n          }\n        ]\n      },\n      {\n        \"name\": \"routeTree.gen.ts\",\n        \"type\": \"file\",\n        \"path\": \"/workspace/repo/src/routeTree.gen.ts\"\n      },\n      {\n        \"name\": \"router.tsx\",\n        \"type\": \"file\",\n        \"path\": \"/workspace/repo/src/router.tsx\"\n      },\n      {\n        \"name\": \"routes\",\n        \"type\": \"directory\",\n        \"path\": \"/workspace/repo/src/routes\",\n        \"children\": [\n          {\n            \"name\": \"__root.tsx\",\n            \"type\": \"file\",\n            \"path\": \"/workspace/repo/src/routes/__root.tsx\"\n          },\n          {\n            \"name\": \"index.tsx\",\n            \"type\": \"file\",\n            \"path\": \"/workspace/repo/src/routes/index.tsx\"\n          }\n        ]\n      },\n      {\n        \"name\": \"styles.css\",\n        \"type\": \"file\",\n        \"path\": \"/workspace/repo/src/styles.css\"\n      }\n    ]\n  },\n  \"text\": \"src/\\n\\u251c\\u2500\\u2500 env.ts\\n\\u251c\\u2500\\u2500 lib/\\n\\u2502   \\u2514\\u2500\\u2500 utils.ts\\n\\u251c\\u2500\\u2500 routeTree.gen.ts\\n\\u251c\\u2500\\u2500 router.tsx\\n\\u251c\\u2500\\u2500 routes/\\n\\u2502   \\u251c\\u2500\\u2500 __root.tsx\\n\\u2502   \\u2514\\u2500\\u2500 index.tsx\\n\\u2514\\u2500\\u2500 styles.css\\n\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Search (grep)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"TODO\",\n  \"path\": \"/workspace/repo\",\n  \"regex\": false,\n  \"ignoreCase\": true,\n  \"glob\": \"*.ts\",\n  \"maxResults\": 100\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "search"
+              ]
+            },
+            "description": "grep file contents. Only `query` is required. Returns { matches: [{ file, line, text }], truncated }."
+          },
+          "response": [
+            {
+              "name": "Live: Search (grep) \u2192 200",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "search"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"TanStack\",\n  \"path\": \"/workspace/repo\",\n  \"regex\": false,\n  \"ignoreCase\": true,\n  \"glob\": \"*.tsx\",\n  \"maxResults\": 50\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"matches\": [\n    {\n      \"file\": \"/workspace/repo/src/router.tsx\",\n      \"line\": 1,\n      \"text\": \"import { createRouter as createTanStackRouter } from '@tanstack/react-router'\"\n    },\n    {\n      \"file\": \"/workspace/repo/src/router.tsx\",\n      \"line\": 5,\n      \"text\": \"  const router = createTanStackRouter({\"\n    },\n    {\n      \"file\": \"/workspace/repo/src/router.tsx\",\n      \"line\": 16,\n      \"text\": \"declare module '@tanstack/react-router' {\"\n    },\n    {\n      \"file\": \"/workspace/repo/src/routes/__root.tsx\",\n      \"line\": 1,\n      \"text\": \"import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'\"\n    },\n    {\n      \"file\": \"/workspace/repo/src/routes/__root.tsx\",\n      \"line\": 16,\n      \"text\": \"        title: 'TanStack Start Starter',\"\n    },\n    {\n      \"file\": \"/workspace/repo/src/routes/index.tsx\",\n      \"line\": 1,\n      \"text\": \"import { createFileRoute } from '@tanstack/react-router'\"\n    },\n    {\n      \"file\": \"/workspace/repo/src/routes/index.tsx\",\n      \"line\": 8,\n      \"text\": \"      <h1 className=\\\"text-4xl font-bold\\\">Welcome to TanStack Start</h1>\"\n    }\n  ],\n  \"truncated\": false\n}",
+              "cookie": []
+            },
+            {
+              "name": "Live: Search (400 validation) \u2192 400",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "search"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"message\": [\n    \"query: Required\"\n  ],\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Glob (find by name)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/glob?pattern=*.json&path=/workspace/repo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "glob"
+              ],
+              "query": [
+                {
+                  "key": "pattern",
+                  "value": "*.json"
+                },
+                {
+                  "key": "path",
+                  "value": "/workspace/repo"
+                }
+              ]
+            },
+            "description": "Find files by name (excludes node_modules/.git). Returns { files, truncated }."
+          },
+          "response": [
+            {
+              "name": "Live: Glob (find by name) \u2192 200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/glob?pattern=*.tsx&path=/workspace/repo&maxResults=100",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "glob"
+                  ],
+                  "query": [
+                    {
+                      "key": "pattern",
+                      "value": "*.tsx"
+                    },
+                    {
+                      "key": "path",
+                      "value": "/workspace/repo"
+                    },
+                    {
+                      "key": "maxResults",
+                      "value": "100"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"files\": [\n    \"/workspace/repo/src/router.tsx\",\n    \"/workspace/repo/src/routes/__root.tsx\",\n    \"/workspace/repo/src/routes/index.tsx\"\n  ],\n  \"truncated\": false\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Make Directory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"path\": \"/workspace/repo/newdir\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/mkdir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "mkdir"
+              ]
+            },
+            "description": "mkdir -p."
+          },
+          "response": [
+            {
+              "name": "Live: Make Directory \u2192 201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/mkdir",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "mkdir"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"path\": \"/workspace/repo/scratchdir\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratchdir\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Move / Rename",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": \"/workspace/repo/a.txt\",\n  \"to\": \"/workspace/repo/b.txt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/move",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "move"
+              ]
+            },
+            "description": "Move/rename (creates the destination's parent dir)."
+          },
+          "response": [
+            {
+              "name": "Live: Move / Rename \u2192 200",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/move",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "move"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"from\": \"/workspace/repo/scratchdir/copy.txt\",\n  \"to\": \"/workspace/repo/scratchdir/moved.txt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"from\": \"/workspace/repo/scratchdir/copy.txt\",\n  \"to\": \"/workspace/repo/scratchdir/moved.txt\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Copy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": \"/workspace/repo/a.txt\",\n  \"to\": \"/workspace/repo/copy.txt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/copy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "copy"
+              ]
+            },
+            "description": "Copy a file or directory (recursive)."
+          },
+          "response": [
+            {
+              "name": "Live: Copy \u2192 201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/copy",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "copy"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"from\": \"/workspace/repo/scratch.txt\",\n  \"to\": \"/workspace/repo/scratchdir/copy.txt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"from\": \"/workspace/repo/scratch.txt\",\n  \"to\": \"/workspace/repo/scratchdir/copy.txt\"\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - append",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"append\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"content\": \"epsilon\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Live: Edit - append \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"append\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"content\": \"epsilon\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"append\",\n  \"dryRun\": false,\n  \"changed\": true,\n  \"totalLines\": 7,\n  \"before\": [],\n  \"after\": [\n    {\n      \"line\": 7,\n      \"text\": \"epsilon\"\n    }\n  ]\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - prepend",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"prepend\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"content\": \"// top\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Live: Edit - prepend \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"prepend\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"content\": \"// top\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"prepend\",\n  \"dryRun\": false,\n  \"changed\": true,\n  \"totalLines\": 8,\n  \"before\": [],\n  \"after\": [\n    {\n      \"line\": 1,\n      \"text\": \"// top\"\n    }\n  ]\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - delete lines",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"delete\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"start\": 2,\n  \"end\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Live: Edit - delete lines \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"delete\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"start\": 2,\n  \"end\": 3\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"delete\",\n  \"dryRun\": false,\n  \"changed\": true,\n  \"totalLines\": 6,\n  \"before\": [\n    {\n      \"line\": 2,\n      \"text\": \"# header\"\n    },\n    {\n      \"line\": 3,\n      \"text\": \"alpha-1\"\n    }\n  ],\n  \"after\": []\n}",
+              "cookie": []
+            }
+          ]
+        },
+        {
+          "name": "Edit File - replace (dryRun preview)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "files"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"op\": \"replace\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"oldString\": \"gamma\",\n  \"newString\": \"GAMMA\",\n  \"dryRun\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Live: Edit - dryRun \u2192 200",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/files",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "files"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"op\": \"replace\",\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"oldString\": \"gamma\",\n  \"newString\": \"GAMMA\",\n  \"dryRun\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"path\": \"/workspace/repo/scratch.txt\",\n  \"op\": \"replace\",\n  \"dryRun\": true,\n  \"changed\": true,\n  \"totalLines\": 6,\n  \"before\": [\n    {\n      \"line\": 4,\n      \"text\": \"gamma\"\n    }\n  ],\n  \"after\": [\n    {\n      \"line\": 4,\n      \"text\": \"GAMMA\"\n    }\n  ]\n}",
+              "cookie": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tunnels",
+      "item": [
+        {
+          "name": "Get Tunnels",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/tunnels",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "tunnels"
+              ]
+            },
+            "description": "Public HTTPS tunnel URL per exposed (encrypted) port."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/tunnels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "tunnels"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"5173\": \"https://ta-01k-5173-xoqy.w.modal.host\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Publish",
+      "item": [
+        {
+          "name": "Publish to custom domain (free)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scriptName\": \"poc-test\",\n  \"customDomain\": \"{{customDomain}}\",\n  \"env\": {\n    \"APP_GREETING\": \"Hello from prod via publish\",\n    \"TENANT_NAME\": \"zenix-test\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "publish"
+              ]
+            },
+            "description": "FREE path (no Workers for Platforms): deploy the cloned Worker, then bind it to customDomain. Cloudflare creds (apiToken/accountId/zoneId) come from .env by default \u2014 add them to the body to override. `env` is injected BOTH as a build-time .env (Vite/import.meta.env) AND as runtime Worker vars (--var). Run a preview/create first so {{sandboxId}} points at an installed Cloudflare-Workers project. Returns { scriptName, url, customDomain }."
+          },
+          "response": []
+        },
+        {
+          "name": "Publish (build + deploy to Cloudflare)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiToken\": \"{{cfApiToken}}\",\n  \"scriptName\": \"{{scriptName}}\",\n  \"env\": {\n    \"APP_GREETING\": \"Hello from the POC env\",\n    \"TENANT_NAME\": \"acme-demo\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sandboxes",
+                "{{sandboxId}}",
+                "publish"
+              ]
+            },
+            "description": "Build the cloned app and deploy it into a Workers for Platforms dispatch namespace via wrangler, inside the sandbox. The Cloudflare token is used only for the deploy step and never persisted. Redeploying with the same scriptName updates in place (same URL). Run a preview/create first so {{sandboxId}} points at an installed sandbox."
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountId\": \"<account-id>\",\n  \"apiToken\": \"<cf-api-token>\",\n  \"dispatchNamespace\": \"tenant-apps\",\n  \"scriptName\": \"acme-demo\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/publish",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "publish"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"scriptName\": \"acme-demo\",\n  \"url\": \"https://acme-demo.n0.app\",\n  \"output\": \"Total Upload: 512.00 KiB / gzip: 130.00 KiB\\nUploaded acme-demo (tenant-apps) (4.20 sec)\\n\"\n}"
+            },
+            {
+              "name": "400 Bad Request (missing fields)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/publish",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "publish"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": [\n    \"accountId must be a string\",\n    \"apiToken must be a string\",\n    \"dispatchNamespace must be a string\",\n    \"scriptName must be a string\"\n  ],\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "502 Bad Gateway (deploy failed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"accountId\": \"<account-id>\",\n  \"apiToken\": \"<bad-token>\",\n  \"dispatchNamespace\": \"tenant-apps\",\n  \"scriptName\": \"acme-demo\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sandboxes/{{sandboxId}}/publish",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sandboxes",
+                    "{{sandboxId}}",
+                    "publish"
+                  ]
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Deploy failed (exit 1): Authentication error [code: 10000]\",\n  \"error\": \"Bad Gateway\",\n  \"statusCode\": 502\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Deployments (domain rename)",
+      "description": "Manage the public custom domain of a deployed Worker (the free custom-domain path). Cloudflare creds come from .env.",
+      "item": [
+        {
+          "name": "List domains for a deployment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/deployments/poc-test/domains",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "deployments",
+                "poc-test",
+                "domains"
+              ]
+            },
+            "description": "List the custom domains currently bound to the Worker named `poc-test`. \u2192 { scriptName, domains: [...] }"
+          },
+          "response": []
+        },
+        {
+          "name": "Rename / set domain",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"my-cool-app.zenixai.tech\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/deployments/poc-test/domain",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "deployments",
+                "poc-test",
+                "domain"
+              ]
+            },
+            "description": "Change the public URL of the `poc-test` Worker: validates the new subdomain label (\u226445, lowercase start, [a-z0-9-], no leading/trailing/consecutive hyphens, reserved blocklist), rejects 409 if the hostname is used by another project, attaches the new domain, and detaches the old one (old URL then 404s). Note: on the free path Cloudflare re-issues the TLS cert for the new hostname, so HTTPS may take a few minutes to serve. \u2192 { scriptName, domain, removed: [...] }"
+          },
+          "response": [
+            {
+              "name": "400 Bad Request (invalid label)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"My--Bad.zenixai.tech\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deployments/poc-test/domain",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deployments",
+                    "poc-test",
+                    "domain"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Must start with a lowercase letter\",\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Previews",
+      "item": [
+        {
+          "name": "Create Preview",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.sandboxId) {",
+                  "  pm.collectionVariables.set('previewSandboxId', json.sandboxId);",
+                  "  pm.collectionVariables.set('sandboxId', json.sandboxId);",
+                  "}",
+                  "pm.test('returns a preview url', () => pm.expect(json).to.have.property('url'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"repoUrl\": \"{{repoUrl}}\",\n  \"token\": \"{{gitToken}}\",\n  \"branch\": \"\",\n  \"subdir\": \"\",\n  \"port\": 5173,\n  \"env\": {\n    \"APP_GREETING\": \"Hello from the POC env\",\n    \"TENANT_NAME\": \"acme-demo\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/previews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "previews"
+              ]
+            },
+            "description": "Spin up a live preview: create sandbox (git + pnpm) -> clone repo -> install -> start dev server -> return the public tunnel URL. Only `repoUrl` is required; `token` is needed for private repos. Defaults: port 5173, `pnpm install`, `pnpm run dev`."
+          },
+          "response": [
+            {
+              "name": "400 Bad Request (missing repoUrl)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/previews",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "previews"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": [\n    \"repoUrl must be a string\"\n  ],\n  \"error\": \"Bad Request\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "502 Bad Gateway (clone/install failed)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"repoUrl\": \"https://github.com/owner/private.git\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/previews",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "previews"
+                  ]
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Failed to create preview: git clone failed (exit 128): fatal: Authentication failed\",\n  \"error\": \"Bad Gateway\",\n  \"statusCode\": 502\n}"
+            },
+            {
+              "name": "Live: Create Preview \u2192 201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/previews",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "previews"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"repoUrl\": \"https://github.com/HiteshTripathi1/tanstack-starter.git\",\n  \"token\": \"{{gitToken}}\",\n  \"port\": 3000,\n  \"installCmd\": \"npm install --no-fund --no-audit\",\n  \"devCmd\": \"npm run dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ],
+              "body": "{\n  \"sandboxId\": \"sb-rTGEktdTTanUnGucwJIvBu\",\n  \"url\": \"https://ta-01kvw8spzppg5wvthcpz7pxtks-3000-3nkezudvcitnv6cwyvqhsu1aa.w.modal.host\",\n  \"port\": 3000,\n  \"timings\": {\n    \"createMs\": 3096,\n    \"cloneMs\": 2371,\n    \"installMs\": 15626,\n    \"devReadyMs\": 439,\n    \"totalMs\": 21534\n  }\n}",
+              "cookie": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
