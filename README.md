@@ -23,6 +23,26 @@ Scripts:
 | `npm run sandbox`   | One-shot CLI: clone a repo → run it → print tunnel URL|
 | `npm run typecheck` | Type-check without emitting                            |
 
+## Auth
+
+Every request requires a shared API key — **except** the public base (`GET /api`)
+and `GET /api/health`. Set it in `.env`:
+
+```
+API_KEY=...        # generate one: openssl rand -hex 32  (leave empty to disable auth)
+```
+
+Send it on each request as either header:
+
+```
+Authorization: Bearer <API_KEY>
+x-api-key: <API_KEY>
+```
+
+Missing/invalid → `401 { message, error: "Unauthorized", statusCode: 401 }`. CORS
+is open (`*`) so a browser frontend can call the API directly. If `API_KEY` is
+unset, auth is disabled and a startup warning is logged.
+
 ## Endpoints
 
 All under the `API_PREFIX` (default `api`).
@@ -66,11 +86,36 @@ All under the `API_PREFIX` (default `api`).
 
 Paths must be absolute and `..`-free.
 
+## Project API (Lovable-style)
+
+A thin layer over the sandbox/preview flow so a frontend deals in **projects**,
+not raw sandbox ids. Project records persist to `projects.json` (the git token is
+never written to disk).
+
+| Method | Path                    | Description                                                              |
+| ------ | ----------------------- | ------------------------------------------------------------------------ |
+| POST   | `/projects`             | Create from a prompt (instant) → `{ id, status:"created" }`              |
+| GET    | `/projects`             | List projects                                                            |
+| GET    | `/projects/:id`         | Get one (incl. sandbox info once initialized)                            |
+| POST   | `/projects/:id/sandbox` | Provision the sandbox (~20s) → `{ sandboxId, previewUrl, status:"running" }` |
+| DELETE | `/projects/:id`         | Terminate the sandbox + remove the project                               |
+
+Typical frontend flow:
+
+1. `POST /projects { prompt }` → returns `id` instantly (open the workspace).
+2. `POST /projects/:id/sandbox` → returns `previewUrl` (iframe it) + `sandboxId`.
+3. Operate via the existing `/sandboxes/:sandboxId/*` endpoints (read / edit / search / …).
+4. `DELETE /projects/:id` when done.
+
+Sandbox-init clones the boilerplate from `.env` (`GIT_REPO_URL`, `GIT_TOKEN`,
+`DEV_PORT`, `INSTALL_CMD`, `DEV_CMD`) — the frontend sends only a prompt.
+
 ## Postman
 
-Import `postman/modal-sandbox-api.postman_collection.json`. Set the `baseUrl`,
-`repoUrl`, and `gitToken` collection variables. `POST /sandboxes` and
-`POST /previews` auto-save the returned id so the follow-up requests just work.
+Import `postman/modal-sandbox-api.postman_collection.json`. Set the `baseUrl` and
+`apiKey` collection variables (plus `repoUrl`/`gitToken` for previews). The
+collection sends `Authorization: Bearer {{apiKey}}` on every request, and every
+endpoint has real request/response examples (incl. the **Projects** folder).
 
 ## Publishing to Cloudflare
 
@@ -97,15 +142,19 @@ src/
   middleware/
     validate.ts            zod validate() + asyncHandler()
     error.ts               httpError() helper + error -> JSON middleware
-  routes/                  health / sandboxes / previews routers
+    auth.ts                API-key auth (Bearer / x-api-key)
+  routes/                  health / sandboxes / previews / deployments / projects routers
   modal/
     client.ts              lazy Modal SDK client
     registry.ts            in-memory sandbox map
     schemas.ts             zod request schemas
     sandbox-service.ts     sandbox ops (create/exec/files/tunnels/publish)
     files-service.ts       AI file toolkit (read range/edit/tree/search/glob/mkdir/move/copy)
+    cloudflare.ts          Cloudflare custom-domain helpers (publish + deployments)
     preview-service.ts     composed preview flow
     preview-runner.ts      shared clone→install→dev runner (API + CLI)
+    project-store.ts       JSON-file persistence for projects
+    project-service.ts     project lifecycle (create / init sandbox / get / list / remove)
     modal.types.ts         type-only access to the ESM modal SDK
   modal-sandbox.ts         standalone CLI (npm run sandbox)
 ```
